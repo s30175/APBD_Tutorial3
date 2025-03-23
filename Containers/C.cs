@@ -24,7 +24,7 @@ public class C : Container
         double depth, double maximumPayload, string productType, double temperature) :
         base("C", height, containerWeight, depth, maximumPayload)
     {
-        if (ProductTemperatureMap[productType] < temperature)
+        if (ProductTemperatureMap[productType] > temperature)
         {
             throw new TemperatureMismatchException(
                 "Temperature of the container cannot be lower than the temperature required by a given type of product!" +

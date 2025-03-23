@@ -7,7 +7,7 @@ public class Program
     {
         Console.WriteLine("Creating container ship 1...");
         ContainerShip ship1 = new ContainerShip(25,5,50000.0);
-        Console.WriteLine("Creating container ship 1...");
+        Console.WriteLine("Creating container ship 2...");
         ContainerShip ship2 = new ContainerShip(30, 3, 30000.0);
 
         Console.WriteLine("\nCreating a hazardous liquid container (L)...");
