@@ -2,26 +2,29 @@
 
 public class G : Container, IHazardNotifier
 {
-    public G(int mass, int height, int tareWeight, int depth, int serialNumber, int maximumPayload) : base(mass, height, tareWeight, depth, serialNumber, maximumPayload)
+    private double pressure;
+    
+    public G(double height, double containerWeight,
+        double depth, double maximumPayload, double pressure) :
+        base("G", height, containerWeight, depth, maximumPayload)
     {
-        
+        this.pressure = pressure;
+    }
+    
+    public override void EmptyCargo()
+    {
+        cargoWeight *= 0.05;
     }
 
-    public override void emptyCargo()
+    public override string ToString()
     {
-        mass -= (int)(0.95 * mass);
+        return base.ToString() +
+               $"Pressure: {pressure}atm \n" +
+               $"{sendMessage()}\n";
     }
-
-    public override void loadCargo(int cargoWeight)
+    
+    public string sendMessage()
     {
-        if (cargoWeight > maximumPayload)
-        {
-            throw new OverfillException();
-        }
-    }
-
-    public void sendText()
-    {
-        Console.WriteLine("Hazardous event happened on liquid container with serial number: " + serialNumber + "!");
+        return $"In gas container {serialNumber} hazardous event occured!";
     }
 }

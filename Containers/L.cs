@@ -1,47 +1,39 @@
-﻿namespace Tutorial3.Containers;
+﻿using Tutorial3.Exceptions;
+
+namespace Tutorial3.Containers;
 
 public class L : Container, IHazardNotifier
 {
-    public L(int mass, int height, int tareWeight, int depth, int serialNumber, int maximumPayload) : base(mass, height, tareWeight, depth, serialNumber, maximumPayload)
+    private bool hazardous;
+
+    public L(double height, double containerWeight,
+        double depth, double maximumPayload, bool hazardous) :
+        base("L", height, containerWeight, depth, maximumPayload)
     {
+        this.hazardous = hazardous;
+    }
+    
+    protected override bool CanLoad(double newCargoMass)
+    {
+        double currentLimit = !hazardous ? maximumPayload * 0.9 : maximumPayload * 0.5;
         
-    }
-
-    public override void emptyCargo()
-    {
-        mass = 0;
-    }
-
-    public override void loadCargo(int cargoWeight, string cargoType)
-    {
-        if (cargoWeight > maximumPayload)
+        if (cargoWeight + newCargoMass > currentLimit)
         {
-            throw new OverfillException();
-        }
-
-        if (cargoType is "fuel")
-        {
-            if (mass + cargoWeight > 0.5 * maximumPayload)
-            {
-                throw new OverfillException();
-            }
-        }
-
-        if (cargoWeight > 0.9 * maximumPayload)
-        {
-            reportViolation();
+            throw new OverfillException($"Cannot load {newCargoMass}kg. Exceeds {currentLimit}kg limit.");
         }
         
-        mass += cargoWeight;
+        return true;
     }
 
-    public void sendText()
+    public override string ToString()
     {
-        Console.WriteLine("Hazardous event happened on liquid container with serial number: " + serialNumber + "!");
+        return base.ToString() +
+               $"Hazardous: {hazardous}\n" +
+               $"{sendMessage()}\n";
     }
-
-    public void reportViolation()
+    
+    public string sendMessage()
     {
-        Console.WriteLine("Violation reported");
+        return $"In liquid container {serialNumber} hazardous event occured!";
     }
 }
